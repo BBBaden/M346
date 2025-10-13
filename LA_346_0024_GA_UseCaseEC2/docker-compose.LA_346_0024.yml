@@ -53,7 +53,7 @@ services:
         condition: service_started
         required: true
     environment:
-      REACT_APP_API_BASE_URL: http://backend:5038/api
+      REACT_APP_API_BASE_URL: http://:5038/api
     image: fabricethutbbbaden/photoalbumservice-frontend:latest
     networks:
       default: null
