@@ -59,7 +59,7 @@ services:
       default: null
     ports:
       - mode: ingress
-        target: 80
+        target: 3000
         published: "80"
         protocol: tcp
   phpmyadmin:
