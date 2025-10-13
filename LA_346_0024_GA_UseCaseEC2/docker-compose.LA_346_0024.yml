@@ -1,60 +1,88 @@
 name: prod-photoalbumservice
-  
 services:
+  backend:
+    container_name: backend
+    depends_on:
+      db:
+        condition: service_started
+        required: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5038
+      BACKEND_PORT: "5038"
+      BUCKET_NAME: your-bucket-name
+      MYSQL_DATABASE: photo_album_service
+      MYSQL_HOST: db
+      MYSQL_PASSWORD: mypassword
+      MYSQL_PORT: "3306"
+      MYSQL_USER: myuser
+      STORAGE_PROVIDER: local
+    image: fabricethutbbbaden/photoalbumservice-backend:latest
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 5038
+        published: "5038"
+        protocol: tcp
   db:
-    image: fabricethutbbbaden/photoalbumservice-db:latest
     container_name: db
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: photo_album_service
+      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_USER: myuser
+    image: fabricethutbbbaden/photoalbumservice-db:latest
+    networks:
+      default: null
     ports:
-      - "${MYSQL_PORT}:3306"
+      - mode: ingress
+        target: 3306
+        published: "3306"
+        protocol: tcp
+    restart: always
     volumes:
-      - mysqldata:/var/lib/mysql
-    restart: always
-    
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: phpmyadmin
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - "${PMA_PORT}:80"
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-
-  backend:
-    image: fabricethutbbbaden/photoalbumservice-backend:latest
-    container_name: backend
-    environment:
-      BACKEND_PORT: ${BACKEND_PORT}
-      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
-      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
-      MYSQL_HOST: ${MYSQL_HOST}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_PORT: ${MYSQL_PORT}
-      STORAGE_PROVIDER: ${STORAGE_PROVIDER}
-      BUCKET_NAME: ${BUCKET_NAME}
-    ports:
-      - "${BACKEND_PORT}:5038"
-    depends_on:
-    - db
-    
+      - type: volume
+        source: mysqldata
+        target: /var/lib/mysql
+        volume: {}
   frontend:
-    image: fabricethutbbbaden/photoalbumservice-frontend:latest
     container_name: frontend
-    environment:
-      - "REACT_APP_API_BASE_URL=http://backend:${BACKEND_PORT}/api"
-    ports:
-      - "80:80"
     depends_on:
-      - backend
-
+      backend:
+        condition: service_started
+        required: true
+    environment:
+      REACT_APP_API_BASE_URL: http://backend:5038/api
+    image: fabricethutbbbaden/photoalbumservice-frontend:latest
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "80"
+        protocol: tcp
+  phpmyadmin:
+    container_name: phpmyadmin
+    depends_on:
+      db:
+        condition: service_started
+        required: true
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      PMA_HOST: db
+    image: phpmyadmin
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "8080"
+        protocol: tcp
+    restart: always
+networks:
+  default:
+    name: prod-photoalbumservice_default
 volumes:
   mysqldata:
+    name: prod-photoalbumservice_mysqldata
