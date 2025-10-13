@@ -1,0 +1,16 @@
+[Unit]
+Description=M346 Frontend + Backend Docker Compose
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/ec2-user/M346/LA_346_0024_GA_UseCaseEC2
+ExecStart=/usr/local/bin/docker-compose -f docker-compose.LA_346_0024.yml up -d --build
+ExecStop=/usr/local/bin/docker-compose -f docker-compose.LA_346_0024.yml down
+RemainAfterExit=yes
+User=ec2-user
+Group=ec2-user
+
+[Install]
+WantedBy=multi-user.target
