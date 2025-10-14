@@ -1,0 +1,15 @@
+[Unit]
+Description=M346 Docker Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/ec2-user/working-directory
+ExecStart=/usr/bin/docker compose --env ./.env.base --env ./.env.prod -f docker-compose.yml up -d
+ExecStop=/usr/bin/docker compose down
+User=ec2-user
+
+[Install]
+WantedBy=multi-user.target
