@@ -1,0 +1,7 @@
+name: m346
+  
+services:
+  tictactoeindercloud:
+    image: fabricethutbbbaden/346-042-la-tictactoeindercloud:latest
+    ports:
+      - "80:3000"
