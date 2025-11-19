@@ -23,7 +23,7 @@ WORKDIR="/home/ec2-user/working-directory"
 mkdir -p "$WORKDIR"
 
 # Move files to working-directory
-LADIR="/home/ec2-user/M346/LA_346_0024_GA_UseCaseEC2"
+LADIR="/home/ec2-user/M346/346-042-LA-TicTacToeInDerCloud"
 
 mv "$LADIR/.env.base" "$WORKDIR"
 mv "$LADIR/docker-compose.yml" "$WORKDIR"
