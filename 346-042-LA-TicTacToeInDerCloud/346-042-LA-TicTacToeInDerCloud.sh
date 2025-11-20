@@ -25,7 +25,9 @@ mkdir -p "$WORKDIR"
 # Move files to working-directory
 LADIR="/home/ec2-user/M346/346-042-LA-TicTacToeInDerCloud"
 
+shopt -s dotglob
 mv "$LADIR"/* "$WORKDIR"
+shopt -u dotglob
 mv "$SCRIPTDIR/m346-docker.service" "$WORKDIR"
 
 #Configure Service
