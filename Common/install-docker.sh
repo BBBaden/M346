@@ -13,11 +13,12 @@ usermod -aG docker ec2-user
 
 # --- Docker Compose Plugin installieren (für Amazon Linux 2023) ---
 mkdir -p /usr/local/lib/docker/cli-plugins
-curl -SL https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64 \
-    -o /usr/local/lib/docker/cli-plugins/docker-compose
-chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+#download current version of docker compose plugin
+sudo curl -SL "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$(uname -m)" -o /usr/libexec/docker/cli-plugins/docker-compose
+#make plugin executable
+sudo chmod +x /usr/libexec/docker/cli-plugins/docker-compose
 
 # --- Versionen prüfen ---
 docker --version
-docker compose version
+docker-compose version
 echo "... docker installed"
