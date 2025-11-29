@@ -7,8 +7,8 @@ After=docker.service
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=/home/ec2-user/working-directory
-ExecStart=/usr/bin/docker compose --env-file ./.env.base --env-file ./.env.prod -f docker-compose.yml up -d
-ExecStop=/usr/bin/docker compose down
+ExecStart=/usr/local/bin/docker-compose --env-file ./.env.base --env-file ./.env.prod -f docker-compose.yml up -d
+ExecStop=/usr/local/bin/docker-compose down
 User=ec2-user
 
 [Install]
