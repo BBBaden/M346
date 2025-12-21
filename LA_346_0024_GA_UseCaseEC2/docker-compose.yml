@@ -1,6 +1,40 @@
 name: prod-photoalbumservice
-  
+
 services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    ports:
+      - "${MINIO_PORT}:9000"
+      - "${MINIO_CONSOLE_PORT}:9001"
+    volumes:
+      - miniodata:/data
+    restart: always
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set minio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}; do sleep 2; done &&
+      mc mb --ignore-existing minio/${BUCKET_NAME} &&
+      mc anonymous set download minio/${BUCKET_NAME} &&
+      exit 0
+      "
+    restart: "no"
+
   db:
     image: fabricethutbbbaden/photoalbumservice-db:latest
     container_name: db
@@ -14,50 +48,69 @@ services:
     volumes:
       - mysqldata:/var/lib/mysql
     restart: always
-    
+
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin
-    restart: always
     depends_on:
       - db
-    ports:
-      - "${PMA_PORT}:80"
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${PMA_PORT}:80"
+    restart: always
 
   backend:
     image: fabricethutbbbaden/photoalbumservice-backend:latest
     container_name: backend
+    depends_on:
+      db:
+        condition: service_started
+      minio:
+        condition: service_healthy
     environment:
-      BACKEND_PORT: ${BACKEND_PORT}
-      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
-      MYSQL_HOST: ${MYSQL_HOST}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      BACKEND_PORT: ${BACKEND_PORT}
+
+      MYSQL_HOST: db
+      MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_PORT: ${MYSQL_PORT}
+
       STORAGE_PROVIDER: ${STORAGE_PROVIDER}
       BUCKET_NAME: ${BUCKET_NAME}
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_ENDPOINT: http://minio:${MINIO_PORT}
     ports:
       - "${BACKEND_PORT}:5038"
-    depends_on:
-    - db
-    
+    restart: always
+
   frontend:
     image: fabricethutbbbaden/photoalbumservice-frontend:latest
     container_name: frontend
+    depends_on:
+      backend:
+        condition: service_started
+        required: true
+      minio:
+        condition: service_healthy
+        required: true
     environment:
+      BACKEND: ${BACKEND_ADDRESS}
       BACKEND_PORT: ${BACKEND_PORT}
-      BACKEND: ${BACKEND_IP}
-      IMAGE_HOST: ${BACKEND_IP}
-      IMAGE_HOST_PORT: ${BACKEND_PORT}
+      IMAGE_HOST: ${IMAGE_HOST}
+      IMAGE_HOST_PORT: ${MINIO_PORT}
+      BUCKET_NAME: ${BUCKET_NAME}
     ports:
       - "80:80"
-    depends_on:
-      - backend
+    restart: always
 
 volumes:
+  miniodata:
+    name: prod-photoalbumservice_miniodata
   mysqldata:
+    name: prod-photoalbumservice_mysqldata
