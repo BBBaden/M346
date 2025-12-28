@@ -14,13 +14,6 @@ services:
   frontend:
     image: fabricethutbbbaden/photoalbumservice-frontend:latest
     container_name: frontend
-    depends_on:
-      backend:
-        condition: service_started
-        required: true
-      minio:
-        condition: service_healthy
-        required: true
     environment:
       BACKEND: ${BACKEND_ADDRESS}
       BACKEND_PORT: ${BACKEND_PORT}
