@@ -1,0 +1,68 @@
+name: prod-photoalbumservice
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    ports:
+      - "${MINIO_PORT}:9000"
+      - "${MINIO_CONSOLE_PORT}:9001"
+    volumes:
+      - miniodata:/data
+    restart: always
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set minio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}; do sleep 2; done &&
+      mc mb --ignore-existing minio/${BUCKET_NAME} &&
+      mc anonymous set download minio/${BUCKET_NAME} &&
+      exit 0
+      "
+    restart: "no"
+
+  backend:
+    image: fabricethutbbbaden/photoalbumservice-backend:latest
+    container_name: backend
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      BACKEND_PORT: ${BACKEND_PORT}
+
+      MYSQL_HOST: ${MYSQL_DB_ADDRESS}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+      STORAGE_PROVIDER: ${STORAGE_PROVIDER}
+      BUCKET_NAME: ${BUCKET_NAME}
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_ENDPOINT: http://minio:${MINIO_PORT}
+    ports:
+      - "${BACKEND_PORT}:5038"
+    restart: always
+
+volumes:
+  miniodata:
+    name: prod-photoalbumservice_miniodata
+  mysqldata:
+    name: prod-photoalbumservice_mysqldata
