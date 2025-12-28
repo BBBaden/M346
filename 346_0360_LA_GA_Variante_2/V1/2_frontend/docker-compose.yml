@@ -4,10 +4,8 @@ services:
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin
-    depends_on:
-      - db
     environment:
-      PMA_HOST: db
+      PMA_HOST: ${BACKEND_ADDRESS}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "${PMA_PORT}:80"
