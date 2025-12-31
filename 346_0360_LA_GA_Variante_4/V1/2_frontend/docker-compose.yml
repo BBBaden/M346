@@ -18,6 +18,7 @@ services:
       BACKEND: ${BACKEND_ADDRESS}
       BACKEND_PORT: ${BACKEND_PORT}
       IMAGE_HOST_URL: ${IMAGE_HOST_URL}
+      IMAGE_HOST: ${IMAGE_HOST}
     ports:
       - "80:80"
     restart: always
