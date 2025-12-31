@@ -34,6 +34,7 @@ mv "$SCRIPTDIR/m346-docker.service" "$WORKDIR"
 # --- Platzhalter ersetzen ---
 # Ersetzt exakt den String ${BACKEND_ADDRESS} durch den Inhalt der Variable
 sed -i "s/\${BACKEND_ADDRESS}/$BACKEND_ADDRESS/g" "$WORKDIR/.env"
+sed -i "s|\${IMAGE_HOST_URL}|http://$BACKEND_ADDRESS:9000/photoalbum|g" "$WORKDIR/.env"
 
 # Configure Service
 cd "$WORKDIR"

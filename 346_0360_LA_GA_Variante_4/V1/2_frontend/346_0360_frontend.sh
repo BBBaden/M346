@@ -3,6 +3,7 @@
 # --- Variable definieren ---
 # Hier wird die IP gesetzt.
 export BACKEND_ADDRESS="127.0.0.1"
+export S3_URL="m346-variante4-version2.s3.us-east-1.amazonaws.com"
 
 echo "Initialise the system..."
 
@@ -34,7 +35,7 @@ mv "$SCRIPTDIR/m346-docker.service" "$WORKDIR"
 # --- Platzhalter ersetzen ---
 # Ersetzt exakt den String ${BACKEND_ADDRESS} durch den Inhalt der Variable
 sed -i "s/\${BACKEND_ADDRESS}/$BACKEND_ADDRESS/g" "$WORKDIR/.env"
-sed -i "s|\${IMAGE_HOST_URL}|http://$BACKEND_ADDRESS:9000/photoalbum|g" "$WORKDIR/.env"
+sed -i "s/\${IMAGE_HOST_URL}/$S3_URL/g" "$WORKDIR/.env"
 
 # Configure Service
 cd "$WORKDIR"

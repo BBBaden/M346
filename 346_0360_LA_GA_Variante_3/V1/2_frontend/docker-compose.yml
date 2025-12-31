@@ -17,9 +17,7 @@ services:
     environment:
       BACKEND: ${BACKEND_ADDRESS}
       BACKEND_PORT: ${BACKEND_PORT}
-      IMAGE_HOST: ${IMAGE_HOST}
-      IMAGE_HOST_PORT: ${MINIO_PORT}
-      BUCKET_NAME: ${BUCKET_NAME}
+      IMAGE_HOST_URL: ${IMAGE_HOST_URL}
     ports:
       - "80:80"
     restart: always
