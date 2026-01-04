@@ -1,0 +1,64 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "AllowLabRoleWrite",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::654654211976:role/LabRole"
+			},
+			"Action": [
+				"s3:PutObject",
+				"s3:PutObjectAcl",
+				"s3:DeleteObject"
+			],
+			"Resource": "arn:aws:s3:::m346-variante4-version2/*"
+		},
+		{
+			"Sid": "PublicReadGetObject",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::m346-variante4-version2/*",
+			"Condition": {
+        "IpAddress": {
+            "aws:SourceIp": "1.2.3.4/32" //public ip
+        }
+    }
+		}
+	]
+}
+
+
+version 2 S3 endpoint und safe
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowLabRoleWrite",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::654654211976:role/LabRole"
+            },
+            "Action": [
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+                "s3:DeleteObject"
+            ],
+            "Resource": "arn:aws:s3:::m346-variante4-version2/*"
+        },
+        {
+            "Sid": "AllowVpceOnly",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::m346-variante4-version2/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:sourceVpce": "vpce-0738011ee10cca80a" //enpoint id
+                }
+            }
+        }
+    ]
+}
