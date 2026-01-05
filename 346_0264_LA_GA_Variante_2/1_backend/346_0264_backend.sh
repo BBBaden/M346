@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LADIR="/home/ec2-user/M346/346_0264_LA_GA_Variante_2/1_backend/deployment"
+
 echo "Initialise the system..."
 
 # --- System aktualisieren ---
@@ -14,24 +16,19 @@ git clone https://github.com/BBBaden/M346.git
 echo "... git repo cloned"
 
 SCRIPTDIR="/home/ec2-user/M346/Common"
+WORKDIR="/home/ec2-user/working-directory"
 
 # Install Docker
 sh "$SCRIPTDIR/install-docker.sh"
 
 # Create working directory
-WORKDIR="/home/ec2-user/working-directory"
 mkdir -p "$WORKDIR"
 
 # Move files to working-directory
-LADIR="/home/ec2-user/M346/LA_346_0024_GA_UseCaseEC2"
-
-mv "$LADIR/.env.base" "$WORKDIR"
+mv "$LADIR/.env" "$WORKDIR"
 mv "$LADIR/docker-compose.yml" "$WORKDIR"
 mv "$SCRIPTDIR/m346-docker.service" "$WORKDIR"
 
-#Generate .env
-cd "$WORKDIR"
-sh "$SCRIPTDIR/generate-prod-env.sh"
 
 #Configure Service
 cd "$WORKDIR"
