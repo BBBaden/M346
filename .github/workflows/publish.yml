@@ -1,4 +1,4 @@
-name: Publish Files (Single Branch)
+name: Publish Files (Dynamic Title)
 
 on:
   workflow_dispatch:
@@ -28,17 +28,21 @@ jobs:
         run: |
           mkdir -p ${{ env.OUTPUT_DIR }}
           
-          # HTML Header vorbereiten
-          cat > ${{ env.OUTPUT_DIR }}/index.html <<'EOF'
+          # Titel aus JSON auslesen (Fallback auf "Download Portal" falls leer)
+          PAGE_TITLE=$(jq -r '.titel // "Download Portal"' ${{ env.JSON_CONFIG }})
+          
+          # HTML Header mit dynamischem Titel schreiben
+          cat > ${{ env.OUTPUT_DIR }}/index.html <<EOF
           <!doctype html>
           <html lang="de">
           <head>
             <meta charset="utf-8">
-            <title>Script Portal</title>
+            <title>$PAGE_TITLE</title>
             <style>
               body { font-family: -apple-system, sans-serif; padding: 40px; background: #f8f9fa; color: #212529; }
               .container { max-width: 900px; margin: auto; }
               .project-card { background: white; border-radius: 10px; padding: 25px; margin-bottom: 30px; border: 1px solid #dee2e6; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+              h1 { color: #333; margin-bottom: 30px; border-left: 5px solid #007bff; padding-left: 15px; }
               h2 { color: #007bff; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
               ul { list-style: none; padding: 0; }
               li { margin: 12px 0; padding: 12px; background: #f1f3f5; border-radius: 6px; display: flex; align-items: center; }
@@ -49,35 +53,26 @@ jobs:
           </head>
           <body>
             <div class="container">
-              <h1>Script Download Portal</h1>
+              <h1>$PAGE_TITLE</h1>
           EOF
 
-          # Projekte aus JSON lesen
+          # Projekte iterieren
           PROJEKT_ANZAHL=$(jq '.projekte | length' ${{ env.JSON_CONFIG }})
 
           for (( i=0; i<$PROJEKT_ANZAHL; i++ )); do
             PROJEKT_NAME=$(jq -r ".projekte[$i].name" ${{ env.JSON_CONFIG }})
-            echo "Verarbeite Projekt: $PROJEKT_NAME"
-            
             echo "<div class='project-card'><h2>$PROJEKT_NAME</h2><ul>" >> ${{ env.OUTPUT_DIR }}/index.html
             
             FILES=$(jq -r ".projekte[$i].files[]" ${{ env.JSON_CONFIG }})
-            
             for file_path in $FILES; do
               if [ -f "$file_path" ]; then
                 raw_name=$(basename "$file_path")
-                
-                # Datei in den public Ordner kopieren statt zippen
                 cp "$file_path" "${{ env.OUTPUT_DIR }}/$raw_name"
-                
-                echo "<li><span class='file-name'>$raw_name</span><a href='$raw_name' class='btn-view'>Anzeigen / Download</a></li>" >> ${{ env.OUTPUT_DIR }}/index.html
-                echo "Erfolg: $raw_name kopiert."
+                echo "<li><span class='file-name'>$raw_name</span><a href='$raw_name' class='btn-view' download>Download</a></li>" >> ${{ env.OUTPUT_DIR }}/index.html
               else
-                echo "Warnung: Datei $file_path nicht gefunden."
                 echo "<li><span class='file-name' style='color:red;'>$file_path (Nicht gefunden)</span></li>" >> ${{ env.OUTPUT_DIR }}/index.html
               fi
             done
-            
             echo "</ul></div>" >> ${{ env.OUTPUT_DIR }}/index.html
           done
 
