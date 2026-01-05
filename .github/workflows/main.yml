@@ -1,0 +1,87 @@
+name: Publish Files with Jekyll
+
+on:
+  workflow_dispatch:
+
+env:
+  JSON_CONFIG: "files.json"
+  OUTPUT_DIR: "public"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Prepare Jekyll Site
+        run: |
+          mkdir -p ${{ env.OUTPUT_DIR }}
+          
+          # Titel aus JSON lesen
+          PAGE_TITLE=$(jq -r '.titel // "Script Download Portal"' ${{ env.JSON_CONFIG }})
+          
+          # Markdown Header (Frontmatter) fuer Jekyll erstellen
+          cat > ${{ env.OUTPUT_DIR }}/index.md <<EOF
+          ---
+          layout: default
+          title: $PAGE_TITLE
+          ---
+          # $PAGE_TITLE
+
+          Dies ist die aktuelle Liste der verfügbaren Scripte.
+          
+          EOF
+
+          # Projekte aus JSON verarbeiten
+          PROJEKT_ANZAHL=$(jq '.projekte | length' ${{ env.JSON_CONFIG }})
+
+          for (( i=0; i<$PROJEKT_ANZAHL; i++ )); do
+            PROJEKT_NAME=$(jq -r ".projekte[$i].name" ${{ env.JSON_CONFIG }})
+            echo -e "\n## $PROJEKT_NAME" >> ${{ env.OUTPUT_DIR }}/index.md
+            
+            FILES=$(jq -r ".projekte[$i].files[]" ${{ env.JSON_CONFIG }})
+            for file_path in $FILES; do
+              if [ -f "$file_path" ]; then
+                raw_name=$(basename "$file_path")
+                cp "$file_path" "${{ env.OUTPUT_DIR }}/$raw_name"
+                # Markdown Link erstellen
+                echo "* [$raw_name]($raw_name)" >> ${{ env.OUTPUT_DIR }}/index.md
+              else
+                echo "* <span style='color:red'>Fehlt: $file_path</span>" >> ${{ env.OUTPUT_DIR }}/index.md
+              fi
+            done
+          done
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ${{ env.OUTPUT_DIR }}
+          destination: ./_site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
