@@ -5,6 +5,7 @@
 export BACKEND_ADDRESS="127.0.0.1"
 
 echo "Initialise the system..."
+LADIR="/home/ec2-user/M346/346_0264_LA_GA_Variante_2/2_frontend/deployment"
 
 # --- System aktualisieren ---
 dnf update -y
@@ -15,8 +16,7 @@ cd /home/ec2-user
 git clone https://github.com/BBBaden/M346.git
 echo "... git repo cloned"
 
-SCRIPTDIR="/home/ec2-user/M346/346_0360_LA_GA_Variante_2/V1/3_common"
-LADIR="/home/ec2-user/M346/346_0360_LA_GA_Variante_2/V1/2_frontend"
+SCRIPTDIR="/home/ec2-user/M346/Common"
 WORKDIR="/home/ec2-user/working-directory"
 
 # Install Docker
