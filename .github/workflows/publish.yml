@@ -1,4 +1,4 @@
-name: Build Grouped ZIPs (Single Branch)
+name: Publish Files (Single Branch)
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create ZIPs and Index
+      - name: Copy Files and Create Index
         run: |
           mkdir -p ${{ env.OUTPUT_DIR }}
           
@@ -34,7 +34,7 @@ jobs:
           <html lang="de">
           <head>
             <meta charset="utf-8">
-            <title>Download Center</title>
+            <title>Script Portal</title>
             <style>
               body { font-family: -apple-system, sans-serif; padding: 40px; background: #f8f9fa; color: #212529; }
               .container { max-width: 900px; margin: auto; }
@@ -42,9 +42,9 @@ jobs:
               h2 { color: #007bff; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
               ul { list-style: none; padding: 0; }
               li { margin: 12px 0; padding: 12px; background: #f1f3f5; border-radius: 6px; display: flex; align-items: center; }
-              .file-name { flex-grow: 1; font-weight: 500; }
-              .btn-download { background: #007bff; color: white; text-decoration: none; padding: 6px 15px; border-radius: 4px; font-size: 0.9em; }
-              .btn-download:hover { background: #0056b3; }
+              .file-name { flex-grow: 1; font-weight: 500; font-family: monospace; }
+              .btn-view { background: #007bff; color: white; text-decoration: none; padding: 6px 15px; border-radius: 4px; font-size: 0.9em; }
+              .btn-view:hover { background: #0056b3; }
             </style>
           </head>
           <body>
@@ -59,25 +59,21 @@ jobs:
             PROJEKT_NAME=$(jq -r ".projekte[$i].name" ${{ env.JSON_CONFIG }})
             echo "Verarbeite Projekt: $PROJEKT_NAME"
             
-            # Projekt-Sektion im HTML
             echo "<div class='project-card'><h2>$PROJEKT_NAME</h2><ul>" >> ${{ env.OUTPUT_DIR }}/index.html
             
-            # Dateien des Projekts auslesen
             FILES=$(jq -r ".projekte[$i].files[]" ${{ env.JSON_CONFIG }})
             
             for file_path in $FILES; do
               if [ -f "$file_path" ]; then
-                # Dateiname ohne Pfad und Endung fuer das ZIP
                 raw_name=$(basename "$file_path")
-                zip_name="${raw_name%.sh}.zip"
                 
-                # ZIP erstellen (flach)
-                zip -j "${{ env.OUTPUT_DIR }}/$zip_name" "$file_path"
+                # Datei in den public Ordner kopieren statt zippen
+                cp "$file_path" "${{ env.OUTPUT_DIR }}/$raw_name"
                 
-                echo "<li><span class='file-name'>$raw_name</span><a href='$zip_name' class='btn-download'>Download ZIP</a></li>" >> ${{ env.OUTPUT_DIR }}/index.html
-                echo "Erfolg: $zip_name erstellt."
+                echo "<li><span class='file-name'>$raw_name</span><a href='$raw_name' class='btn-view'>Anzeigen / Download</a></li>" >> ${{ env.OUTPUT_DIR }}/index.html
+                echo "Erfolg: $raw_name kopiert."
               else
-                echo "Warnung: Datei $file_path wurde nicht gefunden."
+                echo "Warnung: Datei $file_path nicht gefunden."
                 echo "<li><span class='file-name' style='color:red;'>$file_path (Nicht gefunden)</span></li>" >> ${{ env.OUTPUT_DIR }}/index.html
               fi
             done
