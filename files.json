@@ -1,0 +1,38 @@
+{
+  "projekte": [
+    {
+      "name": "Projekt: TicTacToe Cloud",
+      "files": [
+        "346_0030_LA_TicTacToeInDerCloud/1_frontend/346_0030_frontend.sh"
+      ]
+    },
+    {
+      "name": "Projekt: 346_0194_LA_GA_Variante_1",
+      "files": [
+        "346_0194_LA_GA_Variante_1/1_frontbackend/346_0194_frontbackend.sh"
+      ]
+    },
+    {
+      "name": "Projekt: 346_0264_LA_GA_Variante_2",
+      "files": [
+        "346_0264_LA_GA_Variante_2/1_backend/346_0264_backend.sh",
+        "346_0264_LA_GA_Variante_2/2_frontend/346_0264_frontend.sh"
+      ]
+    },
+    {
+      "name": "Projekt: 346_0304_LA_GA_Variante_3",
+      "files": [
+        "346_0304_LA_GA_Variante_3/1_backend/346_0304_backend.sh",
+        "346_0304_LA_GA_Variante_3/2_frontend/346_0304_frontend.sh"
+      ]
+    },
+    {
+      "name": "Projekt: 346_0334_LA_GA_Variante_4",
+      "files": [
+        "346_0334_LA_GA_Variante_4/1_backend/346_0334_backend.sh",
+        "346_0334_LA_GA_Variante_4/2_frontend/346_0334_frontend.sh"
+      ]
+    }
+    
+  ]
+}
