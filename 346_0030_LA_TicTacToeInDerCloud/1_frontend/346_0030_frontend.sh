@@ -23,7 +23,7 @@ WORKDIR="/home/ec2-user/working-directory"
 mkdir -p "$WORKDIR"
 
 # Move files to working-directory
-LADIR="/home/ec2-user/M346/346_0030_LA_TicTacToeInDerCloud"
+LADIR="/home/ec2-user/M346/346_0030_LA_TicTacToeInDerCloud/1_frontend/deployment"
 
 shopt -s dotglob
 mv "$LADIR"/* "$WORKDIR"
