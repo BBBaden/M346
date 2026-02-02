@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# --- Variable definieren ---
-# Hier wird die IP gesetzt.
+#Folgende Variablen auf eigene Umgebung anpassen
 export BACKEND_ADDRESS="127.0.0.1"
 export S3_URL="m346-variante4-version2.s3.us-east-1.amazonaws.com"
+# Ende Variable anpassen
 
+# --- Hier nichts anpassen ---
 echo "Initialise the system..."
 LADIR="/home/ec2-user/M346/346_0334_LA_GA_Variante_4/2_frontend/deployment"
 
