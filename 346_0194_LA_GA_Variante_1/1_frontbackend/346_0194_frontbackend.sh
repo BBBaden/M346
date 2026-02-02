@@ -25,7 +25,7 @@ sh "$SCRIPTDIR/install-docker.sh"
 WORKDIR="/home/ec2-user/working-directory"
 mkdir -p "$WORKDIR"
 
-mv "$LADIR/.env.base" "$WORKDIR"
+mv "$LADIR/.env" "$WORKDIR"
 mv "$LADIR/docker-compose.yml" "$WORKDIR"
 mv "$SCRIPTDIR/m346-docker.service" "$WORKDIR"
 
