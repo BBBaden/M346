@@ -102,6 +102,7 @@ services:
     environment:
       BACKEND: ${BACKEND_ADDRESS}
       IMAGE_HOST_URL: ${IMAGE_HOST_URL}
+      BACKEND_PORT: ${BACKEND_PORT}
     ports:
       - "80:80"
     restart: always
