@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #Folgende Variablen auf eigene Umgebung anpassen
-export BACKEND_ADDRESS="127.0.0.1"
-export S3_URL="m346-variante4-version2.s3.us-east-1.amazonaws.com"
+export BACKEND_ADDRESS="192.168.2.61"
+export S3_URL="0474-is-s3-ue1-091ffbd5-d11c-4a31-afed-51424f705471.s3.us-east-1.amazonaws.com"
 # Ende Variable anpassen
 
 # --- Hier nichts anpassen ---
