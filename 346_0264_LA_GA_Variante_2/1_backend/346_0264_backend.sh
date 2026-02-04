@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LADIR="/home/ec2-user/M346/346_0264_LA_GA_Variante_2/1_backend/deployment"
+LADIR="/home/ec2-user/M346/346_0474_LA_GA_Variante_4/1_backend/deployment"
 
 echo "Initialise the system..."
 
