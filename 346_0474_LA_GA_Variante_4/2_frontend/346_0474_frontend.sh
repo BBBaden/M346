@@ -7,7 +7,7 @@ export S3_URL="0474-is-s3-ue1-091ffbd5-d11c-4a31-afed-51424f705471.s3.us-east-1.
 
 # --- Hier nichts anpassen ---
 echo "Initialise the system..."
-LADIR="/home/ec2-user/M346/346_0334_LA_GA_Variante_4/2_frontend/deployment"
+LADIR="/home/ec2-user/M346/346_0474_LA_GA_Variante_4/2_frontend/deployment"
 
 # --- System aktualisieren ---
 dnf update -y
