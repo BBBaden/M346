@@ -1,32 +1,16 @@
 name: prod-photoalbumservice
 
 services:
-  db:
-    image: fabricethutbbbaden/photoalbumservice-db:latest
-    container_name: db
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-    ports:
-      - "${MYSQL_PORT}:3306"
-    volumes:
-      - mysqldata:/var/lib/mysql
-    restart: always
 
   backend:
     image: fabricethutbbbaden/photoalbumservice-backend:latest
     container_name: backend
-    depends_on:
-      db:
-        condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       ASPNETCORE_URLS: ${ASPNETCORE_URLS}
       BACKEND_PORT: ${BACKEND_PORT}
 
-      MYSQL_HOST: db
+      MYSQL_HOST:  ${MYSQL_ADDRESS}
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -37,7 +21,3 @@ services:
     ports:
       - "${BACKEND_PORT}:5038"
     restart: always
-
-volumes:
-  mysqldata:
-    name: prod-photoalbumservice_mysqldata

@@ -1,5 +1,5 @@
 {
-  "titel": "M347 Download Portal",
+  "titel": "M346 Download Portal",
   "projekte": [
     {
       "name": "Projekt: TicTacToe Cloud",
@@ -28,10 +28,10 @@
       ]
     },
     {
-      "name": "Projekt: 346_0334_LA_GA_Variante_4",
+      "name": "Projekt: 346_0474_LA_GA_Variante_4",
       "files": [
-        "346_0334_LA_GA_Variante_4/1_backend/346_0334_backend.sh",
-        "346_0334_LA_GA_Variante_4/2_frontend/346_0334_frontend.sh"
+        "346_0474_LA_GA_Variante_4/1_backend/346_0474_backend.sh",
+        "346_0474_LA_GA_Variante_4/2_frontend/346_0474_frontend.sh"
       ]
     }
     
