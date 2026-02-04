@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Move files to working-directory
-LADIR="/home/ec2-user/M346/346_0474_LA_GA_Variante_4/1_frontbackend/deployment"
+LADIR="/home/ec2-user/M346/346_0194_LA_GA_Variante_1/1_frontbackend/deployment"
 
 echo "Initialise the system..."
 
