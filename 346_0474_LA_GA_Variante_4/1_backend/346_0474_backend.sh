@@ -9,7 +9,7 @@ export BUCKET_NAME="m346-variante4-version2"
 
 # --- Hier nichts anpassen ---
 echo "Initialise the system..."
-LADIR="/home/ec2-user/M346/346_0334_LA_GA_Variante_4/1_backend/deployment"
+LADIR="/home/ec2-user/M346/346_0474_LA_GA_Variante_4/1_backend/deployment"
 
 # --- System aktualisieren ---
 dnf update -y
