@@ -8,7 +8,7 @@ export FRONTEND_S3_URL="0474-is-s3-ue1-091ffbd5-d11c-4a31-afed-51424f705471.s3.u
 
 
 # Move files to working-directory
-LADIR="/home/ec2-user/M346/346_0344_LA_GA_Variante_1/1_frontbackend/deployment"
+LADIR="/home/ec2-user/M346/346_0474_LA_GA_Variante_1/1_frontbackend/deployment"
 
 echo "Initialise the system..."
 
