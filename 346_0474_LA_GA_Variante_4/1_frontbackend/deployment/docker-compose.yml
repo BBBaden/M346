@@ -1,0 +1,76 @@
+name: prod-photoalbumservice
+
+services:
+  db:
+    image: fabricethutbbbaden/photoalbumservice-db:latest
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${PMA_PORT}:80"
+    restart: always
+
+  backend:
+    image: fabricethutbbbaden/photoalbumservice-backend:latest
+    container_name: backend
+    depends_on:
+      db:
+        condition: service_started
+      minio:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      BACKEND_PORT: ${BACKEND_PORT}
+
+      MYSQL_HOST: db
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+      STORAGE_PROVIDER: ${STORAGE_PROVIDER}
+      BUCKET_NAME: ${BUCKET_NAME}
+    ports:
+      - "${BACKEND_PORT}:5038"
+    restart: always
+
+  nginx-proxy:
+    image: fabricethutbbbaden/photoalbumservice-nginx-proxy:latest
+    container_name: nginx-proxy
+    depends_on:
+      backend:
+        condition: service_started
+      frontend-deployer:
+        condition: service_started
+    environment:
+      BACKEND: ${BACKEND_ADDRESS}
+      BACKEND_PORT: ${BACKEND_PORT}
+      FRONTEND_HOST_URL: ${FRONTEND_HOST_URL}
+      FRONTEND_HOST: ${FRONTEND_HOST}
+      IMAGE_HOST_URL: ${IMAGE_HOST_URL}
+      IMAGE_HOST: ${IMAGE_HOST}
+    ports:
+      - "80:80"
+    restart: always
+
+volumes:
+  mysqldata:
+    name: prod-photoalbumservice_mysqldata
