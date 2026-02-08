@@ -5,7 +5,7 @@
 export BACKEND_ADDRESS="127.0.0.1"
 
 echo "Initialise the system..."
-LADIR="/home/ec2-user/M346/346_0264_LA_GA_Variante_2/2_frontend/deployment"
+LADIR="/home/ec2-user/M346/346_0274_LA_GA_Variante_2/2_frontend/deployment"
 
 # --- System aktualisieren ---
 dnf update -y

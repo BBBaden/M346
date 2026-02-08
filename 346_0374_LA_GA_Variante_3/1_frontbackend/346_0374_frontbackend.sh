@@ -1,8 +1,14 @@
 #!/bin/bash
 
-LADIR="/home/ec2-user/M346/346_0264_LA_GA_Variante_2/1_backend/deployment"
+# Folgende Variablen auf eigene Umgebung anpassen
+export MYSQL_DB_ADDRESS="db-0374-pri-1a.canxietcztcs.us-east-1.rds.amazonaws.com"
+export MYSQL_USER="admin"
+export MYSQL_USER_PASSWORD="test12345"
+# Ende Variable anpassen
 
+# --- Hier nichts anpassen ---
 echo "Initialise the system..."
+LADIR="/home/ec2-user/M346/346_0374_LA_GA_Variante_3/1_frontbackend/deployment"
 
 # --- System aktualisieren ---
 dnf update -y
@@ -29,6 +35,11 @@ mv "$LADIR/.env" "$WORKDIR"
 mv "$LADIR/docker-compose.yml" "$WORKDIR"
 mv "$SCRIPTDIR/m346-docker.service" "$WORKDIR"
 
+# --- Platzhalter ersetzen ---
+# Ersetzt exakt den String ${...} durch den Inhalt der Variable
+sed -i "s/\${MYSQL_DB_ADDRESS}/$MYSQL_DB_ADDRESS/g" "$WORKDIR/.env"
+sed -i "s/\${MYSQL_ROOT_PASSWORD}/$MYSQL_USER_PASSWORD/g" "$WORKDIR/.env"
+sed -i "s/\${MYSQL_USER}/$MYSQL_USER/g" "$WORKDIR/.env"
 
 #Configure Service
 cd "$WORKDIR"
