@@ -14,16 +14,16 @@
       ]
     },
     {
-      "name": "Projekt: 346_0264_LA_GA_Variante_2",
+      "name": "Projekt: 346_0274_LA_GA_Variante_2",
       "files": [
-        "346_0264_LA_GA_Variante_2/1_backend/346_0264_backend.sh",
-        "346_0264_LA_GA_Variante_2/2_frontend/346_0264_frontend.sh"
+        "346_0274_LA_GA_Variante_2/1_backend/346_0274_backend.sh",
+        "346_0274_LA_GA_Variante_2/2_frontend/346_0764_frontend.sh"
       ]
     },
     {
-      "name": "Projekt: 346_0304_LA_GA_Variante_3",
+      "name": "Projekt: 346_0374_LA_GA_Variante_3",
       "files": [
-        "346_0304_LA_GA_Variante_3/1_frontbackend/346_0304_frontbackend.sh"
+        "346_0374_LA_GA_Variante_3/1_frontbackend/346_0374_frontbackend.sh"
       ]
     },
     {
