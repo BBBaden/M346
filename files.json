@@ -30,7 +30,8 @@
     {
       "name": "Projekt: 346_0474_LA_GA_Variante_4",
       "files": [
-        "346_0474_LA_GA_Variante_4/1_frontbackend/346_0474_frontbackend.sh.sh"
+        "346_0474_LA_GA_Variante_4/1_frontbackend/346_0474_frontbackend.sh",
+        "346_0474_LA_GA_Variante_4/frontend-build.zip"
       ]
     }
     
