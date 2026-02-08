@@ -4,7 +4,6 @@
 export MYSQL_DB_ADDRESS="db-0474-pri-1a.canxietcztcs.us-east-1.rds.amazonaws.com"
 export MYSQL_USER="admin"
 export MYSQL_USER_PASSWORD="test12345"
-export IMAGE_BUCKET_NAME="0474-is-s3-ue1-091ffbd5-d11c-4a31-afed-51424f705471"
 # Ende Variable anpassen
 
 # --- Hier nichts anpassen ---
@@ -41,7 +40,6 @@ mv "$SCRIPTDIR/m346-docker.service" "$WORKDIR"
 sed -i "s/\${MYSQL_DB_ADDRESS}/$MYSQL_DB_ADDRESS/g" "$WORKDIR/.env"
 sed -i "s/\${MYSQL_ROOT_PASSWORD}/$MYSQL_USER_PASSWORD/g" "$WORKDIR/.env"
 sed -i "s/\${MYSQL_USER}/$MYSQL_USER/g" "$WORKDIR/.env"
-sed -i "s/\${BUCKET_NAME}/$IMAGE_BUCKET_NAME/g" "$WORKDIR/.env"
 
 #Configure Service
 cd "$WORKDIR"
