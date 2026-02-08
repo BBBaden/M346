@@ -31,9 +31,22 @@ services:
       until mc alias set minio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}; do sleep 2; done &&
       mc mb --ignore-existing minio/${BUCKET_NAME} &&
       mc anonymous set download minio/${BUCKET_NAME} &&
+      mc mb --ignore-existing minio/${FRONTEND_BUCKET} &&
+      mc anonymous set download minio/${FRONTEND_BUCKET} &&
       exit 0
       "
     restart: "no"
+
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: ${MYSQL_ADDRESS}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${PMA_PORT}:80"
+    restart: always
 
   backend:
     image: fabricethutbbbaden/photoalbumservice-backend:latest
@@ -46,7 +59,7 @@ services:
       ASPNETCORE_URLS: ${ASPNETCORE_URLS}
       BACKEND_PORT: ${BACKEND_PORT}
 
-      MYSQL_HOST: ${MYSQL_DB_ADDRESS}
+      MYSQL_HOST:  ${MYSQL_ADDRESS}
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -59,6 +72,38 @@ services:
       MINIO_ENDPOINT: http://minio:${MINIO_PORT}
     ports:
       - "${BACKEND_PORT}:5038"
+    restart: always
+
+  frontend-deployer:
+    image: fabricethutbbbaden/photoalbumservice-frontend-deployer:latest
+    container_name: frontend-deployer
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      S3_ENDPOINT: http://minio:${MINIO_PORT}
+      S3_ACCESS_KEY: ${MINIO_ROOT_USER}
+      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      FRONTEND_BUCKET: ${FRONTEND_BUCKET}
+    restart: "no"
+
+  nginx-proxy:
+    image: fabricethutbbbaden/photoalbumservice-nginx-proxy:latest
+    container_name: nginx-proxy
+    depends_on:
+      backend:
+        condition: service_started
+      frontend-deployer:
+        condition: service_started
+    environment:
+      BACKEND: ${BACKEND_ADDRESS}
+      BACKEND_PORT: ${BACKEND_PORT}
+      FRONTEND_HOST_URL: ${FRONTEND_HOST_URL}
+      FRONTEND_HOST: ${FRONTEND_HOST}
+      IMAGE_HOST_URL: ${IMAGE_HOST_URL}
+      IMAGE_HOST: ${IMAGE_HOST}
+    ports:
+      - "80:80"
     restart: always
 
 volumes:
