@@ -2,6 +2,9 @@ name: Publish Files with Jekyll
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 env:
   JSON_CONFIG: "files.json"
