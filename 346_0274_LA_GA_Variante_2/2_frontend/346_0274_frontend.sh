@@ -4,8 +4,15 @@
 # Hier wird die IP gesetzt.
 export BACKEND_ADDRESS="127.0.0.1"
 
+# --- Prüfen, ob ein Parameter mitgegeben wurde ---
+# [ -n "$1" ] prüft, ob der erste Parameter NICHT leer ist (n = not empty)
+if [ -n "$1" ]; then
+    echo "Parameter gefunden: Setze BACKEND_ADDRESS auf $1"
+    export BACKEND_ADDRESS="$1"
+fi
+
 echo "Initialise the system..."
-LADIR="/home/ec2-user/M346/346_0274_LA_GA_Variante_2/2_frontend/deployment"
+LADIR="/home/ec2-user/M346/M346/346_0274_LA_GA_Variante_2/2_frontend/deployment"
 
 # --- System aktualisieren ---
 dnf update -y
