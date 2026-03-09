@@ -109,5 +109,3 @@ services:
 volumes:
   miniodata:
     name: prod-photoalbumservice_miniodata
-  mysqldata:
-    name: prod-photoalbumservice_mysqldata

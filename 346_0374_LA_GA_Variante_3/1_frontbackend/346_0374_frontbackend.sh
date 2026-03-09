@@ -7,6 +7,21 @@ export MYSQL_USER_PASSWORD="test12345"
 # Ende Variable anpassen
 
 # --- Hier nichts anpassen ---
+# --- Pruefen, ob Parameter mitgegeben wurden ---
+# $1 = MYSQL_DB_ADDRESS, $2 = MYSQL_USER, $3 = MYSQL_USER_PASSWORD
+if [ -n "$1" ]; then
+  echo "Parameter gefunden: Setze MYSQL_DB_ADDRESS auf $1"
+  export MYSQL_DB_ADDRESS="$1"
+fi
+if [ -n "$2" ]; then
+  echo "Parameter gefunden: Setze MYSQL_USER auf $2"
+  export MYSQL_USER="$2"
+fi
+if [ -n "$3" ]; then
+  echo "Parameter gefunden: Setze MYSQL_USER_PASSWORD auf $3"
+  export MYSQL_USER_PASSWORD="$3"
+fi
+
 echo "Initialise the system..."
 LADIR="/home/ec2-user/M346/346_0374_LA_GA_Variante_3/1_frontbackend/deployment"
 
