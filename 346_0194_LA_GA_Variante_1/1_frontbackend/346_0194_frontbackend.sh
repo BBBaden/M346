@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Move files to working-directory
-LADIR="/home/ec2-user/LA/346_0194_LA_GA_Variante_1/1_frontbackend/deployment"
+LADIR="/home/ec2-user/M346/346_0194_LA_GA_Variante_1/1_frontbackend/deployment"
 
 echo "Initialise the system..."
 
@@ -13,10 +13,10 @@ dnf install -y git
 
 echo "Clone git repo ..."
 cd /home/ec2-user
-git clone https://github.com/BBBaden/LA.git
+git clone https://github.com/BBBaden/M346.git
 echo "... git repo cloned"
 
-SCRIPTDIR="/home/ec2-user/LA/Common"
+SCRIPTDIR="/home/ec2-user/M346/Common"
 
 # Install Docker
 sh "$SCRIPTDIR/install-docker.sh"

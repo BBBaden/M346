@@ -1,5 +1,5 @@
 [Unit]
-Description=LA Docker Service
+Description=M346 Docker Service
 Requires=docker.service
 After=docker.service
 
