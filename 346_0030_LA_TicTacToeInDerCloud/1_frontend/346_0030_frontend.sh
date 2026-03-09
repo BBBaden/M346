@@ -13,7 +13,7 @@ cd /home/ec2-user
 git clone https://github.com/BBBaden/M346.git
 echo "... git repo cloned"
 
-SCRIPTDIR="/home/ec2-user/M346/LA/Common"
+SCRIPTDIR="/home/ec2-user/M346/Common"
 
 # Install Docker
 sh "$SCRIPTDIR/install-docker.sh"
