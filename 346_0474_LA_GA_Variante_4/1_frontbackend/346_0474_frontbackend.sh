@@ -8,7 +8,7 @@ export FRONTEND_S3_URL="0474-is-s3-ue1-091ffbd5-d11c-4a31-afed-51424f705471.s3.u
 
 
 # Move files to working-directory
-LADIR="/home/ec2-user/M346/346_0474_LA_GA_Variante_4/1_frontbackend/deployment"
+LADIR="/home/ec2-user/LA/346_0474_LA_GA_Variante_4/1_frontbackend/deployment"
 
 echo "Initialise the system..."
 
@@ -20,10 +20,10 @@ dnf install -y git
 
 echo "Clone git repo ..."
 cd /home/ec2-user
-git clone https://github.com/BBBaden/M346.git
+git clone https://github.com/BBBaden/LA.git
 echo "... git repo cloned"
 
-SCRIPTDIR="/home/ec2-user/M346/Common"
+SCRIPTDIR="/home/ec2-user/LA/Common"
 
 # Install Docker
 sh "$SCRIPTDIR/install-docker.sh"
@@ -34,7 +34,7 @@ mkdir -p "$WORKDIR"
 
 mv "$LADIR/.env" "$WORKDIR"
 mv "$LADIR/docker-compose.yml" "$WORKDIR"
-mv "$SCRIPTDIR/m346-docker.service" "$WORKDIR"
+mv "$SCRIPTDIR/la-docker.service" "$WORKDIR"
 
 # --- Platzhalter ersetzen ---
 # Ersetzt exakt den String ${BACKEND_ADDRESS} durch den Inhalt der Variable

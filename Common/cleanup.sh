@@ -25,7 +25,7 @@ delete_file() {
 echo "Starte Bereinigungsprozess..."
 
 # Aufruf der Funktionen mit deinen spezifischen Pfaden
-delete_directory "M346"
+delete_directory "LA"
 delete_directory "working-directory"
 delete_file "docker_status.log"
 
