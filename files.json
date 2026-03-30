@@ -38,6 +38,12 @@
       "files": [
         "LB/346-LB-V3.0.zip"
       ]
+    },
+    {
+      "name": "Vorlagen",
+      "files": [
+        "Vorlagen/M346_Bibliothek_V1.0.xml"
+      ]
     }
   ]
 }
