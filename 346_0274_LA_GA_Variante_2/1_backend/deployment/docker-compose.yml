@@ -58,6 +58,12 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
     ports:
       - "${MYSQL_PORT}:3306"
     volumes:
@@ -69,7 +75,7 @@ services:
     container_name: backend
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
       minio:
         condition: service_healthy
     environment:
@@ -90,6 +96,16 @@ services:
       MINIO_ENDPOINT: http://minio:${MINIO_PORT}
     ports:
       - "${BACKEND_PORT}:5038"
+    restart: always
+
+  autoheal:
+    image: willfarrell/autoheal:latest
+    container_name: autoheal
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+      AUTOHEAL_INTERVAL: 10
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: always
 
 volumes:
