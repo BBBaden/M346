@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic Tac Toe</title>
+  <style>
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      margin-top: 50px;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+      border: 1px solid black;
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+<h1>Tic Tac Toe</h1>
+
+<div id="board">
+  <div class="cell" data-index="0"></div>
+  <div class="cell" data-index="1"></div>
+  <div class="cell" data-index="2"></div>
+  <div class="cell" data-index="3"></div>
+  <div class="cell" data-index="4"></div>
+  <div class="cell" data-index="5"></div>
+  <div class="cell" data-index="6"></div>
+  <div class="cell" data-index="7"></div>
+  <div class="cell" data-index="8"></div>
+</div>
+
+<button id="resetBtn">Reset</button>
+
+<script>
+  const cells = document.querySelectorAll(".cell");
+  const resetBtn = document.getElementById("resetBtn");
+
+  let board = Array(9).fill("");
+  let currentPlayer = "X";
+  let winner = null;
+
+  const winningLines = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6],
+  ];
+
+  function checkWinner(b) {
+    for (const [a, c, d] of winningLines) {
+      if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a];
+    }
+    if (b.every(v => v !== "")) return "Draw";
+    return null;
+  }
+
+  function render() {
+    board.forEach((mark, i) => (cells[i].textContent = mark));
+  }
+
+  function handleClick(e) {
+    const index = Number(e.target.dataset.index);
+
+    if (winner) return;
+    if (board[index] !== "") return;
+
+    board[index] = currentPlayer;
+    winner = checkWinner(board);
+    render();
+
+    if (winner) {
+      alert(winner === "Draw" ? "It's a Draw!" : `Player ${winner} wins!`);
+      return;
+    }
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+  }
+
+  function resetGame() {
+    board = Array(9).fill("");
+    currentPlayer = "X";
+    winner = null;
+    render();
+  }
+
+  cells.forEach(cell => cell.addEventListener("click", handleClick));
+  resetBtn.addEventListener("click", resetGame);
+
+  render();
+</script>
+</body>
+</html>
