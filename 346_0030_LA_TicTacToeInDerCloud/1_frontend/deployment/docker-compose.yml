@@ -2,6 +2,6 @@ name: m346
   
 services:
   tictactoeindercloud:
-    image: fabricethutbbbaden/346-042-la-tictactoeindercloud:latest
+    image: fabricethutbbbaden/346-030-la-tictactoeindercloud:latest
     ports:
       - "80:80"
