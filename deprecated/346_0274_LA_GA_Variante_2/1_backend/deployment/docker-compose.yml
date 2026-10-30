@@ -2,7 +2,7 @@ name: prod-photoalbumservice
 
 services:
   minio:
-    image: minio/minio:latest
+    image: fabricethutbbbaden/minio-minio:latest
     container_name: minio
     command: server /data --console-address ":9001"
     environment:
@@ -21,7 +21,7 @@ services:
     restart: always
 
   minio-init:
-    image: minio/mc:latest
+    image: fabricethutbbbaden/minio-mc:latest
     container_name: minio-init
     depends_on:
       minio:
