@@ -41,7 +41,11 @@ cp config.sample.inc.php config.inc.php
 
 # RDS Host und Port setzen
 sed -i "s|'localhost'|'$MYSQL_DB_ADDRESS'|" config.inc.php
-sed -i "/\['host'\] = /a \$cfg['Servers'][\$i]['port'] = '$MYSQL_DB_PORT';" config.inc.php
+sed -i "/\['host'\] = /a \$cfg['Servers'][\$i]['port'] = $MYSQL_DB_PORT;" config.inc.php
+
+# Blowfish-Secret setzen (genau 32 Zeichen), sonst Fehlermeldung beim Login
+BLOWFISH_SECRET="$(openssl rand -hex 16)"
+sed -i "s|\['blowfish_secret'\] = '';|['blowfish_secret'] = '$BLOWFISH_SECRET';|" config.inc.php
 
 echo "... phpMyAdmin erreichbar unter http://<public-ip>/phpmyadmin"
 echo "... system initialised"
