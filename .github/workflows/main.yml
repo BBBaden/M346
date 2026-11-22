@@ -50,6 +50,14 @@ jobs:
             echo "" >> ${{ env.OUTPUT_DIR }}/index.md
           fi
 
+          # Aktuelle Version draw.io-Bibliothek
+          BIB_VERSION=$(jq -r '.bibliothek.version // empty' ${{ env.JSON_CONFIG }})
+          if [ -n "$BIB_VERSION" ]; then
+            BIB_DATEI=$(jq -r '.bibliothek.datei' ${{ env.JSON_CONFIG }})
+            echo "**draw.io-Bibliothek: Version $BIB_VERSION** – [$BIB_DATEI]($BIB_DATEI)" >> ${{ env.OUTPUT_DIR }}/index.md
+            echo "" >> ${{ env.OUTPUT_DIR }}/index.md
+          fi
+
           # Projekte aus JSON verarbeiten
           PROJEKT_ANZAHL=$(jq '.projekte | length' ${{ env.JSON_CONFIG }})
 
@@ -69,6 +77,12 @@ jobs:
               fi
             done
           done
+
+      - name: Versions-Anzeigen (Korrektur-Tool, Bibliothek)
+        run: |
+          python3 .github/scripts/version_dateien.py ${{ env.JSON_CONFIG }} ${{ env.OUTPUT_DIR }} "https://bbbaden.github.io/M346/"
+          # Jekyll soll die Dateien unveraendert ausliefern (kein Layout)
+          ls -l ${{ env.OUTPUT_DIR }}/version.*
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
