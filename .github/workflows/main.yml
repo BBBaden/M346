@@ -41,6 +41,15 @@ jobs:
           
           EOF
 
+          # Aktuelle Version Korrektur-Tool (vom Sync-Workflow in files.json gesetzt)
+          CHECKER_VERSION=$(jq -r '.korrekturtool.version // empty' ${{ env.JSON_CONFIG }})
+          if [ -n "$CHECKER_VERSION" ]; then
+            CHECKER_DOCKER=$(jq -r '.korrekturtool.docker // empty' ${{ env.JSON_CONFIG }})
+            CHECKER_URL=$(jq -r '.korrekturtool.url // empty' ${{ env.JSON_CONFIG }})
+            echo "**Korrektur-Tool: Version $CHECKER_VERSION** – \`docker pull $CHECKER_DOCKER\` ([alle Versionen]($CHECKER_URL))" >> ${{ env.OUTPUT_DIR }}/index.md
+            echo "" >> ${{ env.OUTPUT_DIR }}/index.md
+          fi
+
           # Projekte aus JSON verarbeiten
           PROJEKT_ANZAHL=$(jq '.projekte | length' ${{ env.JSON_CONFIG }})
 
