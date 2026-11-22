@@ -54,7 +54,10 @@ jobs:
           BIB_VERSION=$(jq -r '.bibliothek.version // empty' ${{ env.JSON_CONFIG }})
           if [ -n "$BIB_VERSION" ]; then
             BIB_DATEI=$(jq -r '.bibliothek.datei' ${{ env.JSON_CONFIG }})
-            echo "**draw.io-Bibliothek: Version $BIB_VERSION** – [$BIB_DATEI]($BIB_DATEI)" >> ${{ env.OUTPUT_DIR }}/index.md
+            BIB_PFAD=$(jq -r '.bibliothek.pfad // empty' ${{ env.JSON_CONFIG }})
+            BIB_LINK="$BIB_DATEI"
+            if [ -f "$BIB_PFAD" ]; then BIB_LINK="$BIB_DATEI?v=$(sha256sum "$BIB_PFAD" | cut -c1-10)"; fi
+            echo "**draw.io-Bibliothek: Version $BIB_VERSION** – [$BIB_DATEI]($BIB_LINK)" >> ${{ env.OUTPUT_DIR }}/index.md
             echo "" >> ${{ env.OUTPUT_DIR }}/index.md
           fi
 
@@ -70,8 +73,10 @@ jobs:
               if [ -f "$file_path" ]; then
                 raw_name=$(basename "$file_path")
                 cp "$file_path" "${{ env.OUTPUT_DIR }}/$raw_name"
-                # Markdown Link erstellen
-                echo "* [$raw_name]($raw_name)" >> ${{ env.OUTPUT_DIR }}/index.md
+                # Markdown Link erstellen. ?v=<Inhalts-Hash>: Dateiname bleibt bei neuem Inhalt
+                # gleich (z. B. *_checker-v2.0.0.7z), neue URL umgeht Browser-/CDN-Cache (max-age=600).
+                hash=$(sha256sum "$file_path" | cut -c1-10)
+                echo "* [$raw_name]($raw_name?v=$hash)" >> ${{ env.OUTPUT_DIR }}/index.md
               else
                 echo "* <span style='color:red'>Fehlt: $file_path</span>" >> ${{ env.OUTPUT_DIR }}/index.md
               fi
