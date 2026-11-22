@@ -14,31 +14,26 @@
       ]
     },
     {
-      "name": "LB V3.0: LB_M346_v3.0_LbB",
-      "files": [
-        "LB/LB_m346_3.0_LbB_1_basics.zip",
-        "LB/LB_m346_3.0_LbB_2_beginner.zip",
-        "LB/LB_m346_3.0_LbB_3_intermediate.zip",
-        "LB/LB_m346_3.0_LbB_4_advanced.zip"
-      ]
-    },
-    {
       "name": "Vorlagen",
       "files": [
-        "Vorlagen/M346_Bibliothek_V2.0.zip",
-        "Vorlagen/M346_Bibliothek_V1.0.zip"
+        "Vorlagen/M346_Bibliothek_V2.0.zip"
       ]
     },
     {
-      "name": "LB V4.0: LB_m346_4.0_LbB (Korrektur-Tool 2.0.0)",
+      "name": "LB V4.0: LB_M346_v4.0_LbB Code",
       "files": [
-        "LB/LB_m346_4.0_LbB_1_basics.7z",
+        "LB/LB_m346_4.0_LbB_1_basics.zip",
+        "LB/LB_m346_4.0_LbB_2_beginner.zip",
+        "LB/LB_m346_4.0_LbB_3_intermediate.zip",
+        "LB/LB_m346_4.0_LbB_4_advanced.zip"
+      ]
+    },
+    {
+      "name": "LB V4.0: LB_M346_v4.0_LbB Prüfungen",
+      "files": [
         "LB/LB_m346_4.0_LbB_1_Dokumente_checker-v2.0.0.7z",
-        "LB/LB_m346_4.0_LbB_2_beginner.7z",
         "LB/LB_m346_4.0_LbB_2_Dokumente_checker-v2.0.0.7z",
-        "LB/LB_m346_4.0_LbB_3_intermediate.7z",
         "LB/LB_m346_4.0_LbB_3_Dokumente_checker-v2.0.0.7z",
-        "LB/LB_m346_4.0_LbB_4_advanced.7z",
         "LB/LB_m346_4.0_LbB_4_Dokumente_checker-v2.0.0.7z"
       ]
     }
@@ -53,5 +48,5 @@
     "datei": "M346_Bibliothek_V2.0.zip",
     "pfad": "Vorlagen/M346_Bibliothek_V2.0.zip"
   },
-  "stand": "22.11.2026 19:40"
+  "stand": "22.11.2026 20:08"
 }
