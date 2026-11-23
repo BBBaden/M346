@@ -16,7 +16,7 @@
     {
       "name": "Vorlagen",
       "files": [
-        "Vorlagen/M346_Bibliothek_V2.0.zip"
+        "Vorlagen/M346_Bibliothek_V2.1.zip"
       ]
     },
     {
@@ -44,9 +44,9 @@
     "url": "https://hub.docker.com/r/fabricethutbbbaden/m346-checker/tags"
   },
   "bibliothek": {
-    "version": "2.0",
-    "datei": "M346_Bibliothek_V2.0.zip",
-    "pfad": "Vorlagen/M346_Bibliothek_V2.0.zip"
+    "version": "2.1",
+    "datei": "M346_Bibliothek_V2.1.zip",
+    "pfad": "Vorlagen/M346_Bibliothek_V2.1.zip"
   },
-  "stand": "23.11.2026 00:00"
+  "stand": "23.11.2026 21:35"
 }
