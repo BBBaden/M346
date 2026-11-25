@@ -31,16 +31,16 @@
     {
       "name": "LB V4.0: LB_M346_v4.0_LbB Prüfungen",
       "files": [
-        "LB/LB_m346_4.0_LbB_1_Dokumente_checker-v2.1.0.7z",
-        "LB/LB_m346_4.0_LbB_2_Dokumente_checker-v2.1.0.7z",
-        "LB/LB_m346_4.0_LbB_3_Dokumente_checker-v2.1.0.7z",
-        "LB/LB_m346_4.0_LbB_4_Dokumente_checker-v2.1.0.7z"
+        "LB/LB_m346_4.0_LbB_1_Dokumente_checker-v2.1.1.7z",
+        "LB/LB_m346_4.0_LbB_2_Dokumente_checker-v2.1.1.7z",
+        "LB/LB_m346_4.0_LbB_3_Dokumente_checker-v2.1.1.7z",
+        "LB/LB_m346_4.0_LbB_4_Dokumente_checker-v2.1.1.7z"
       ]
     }
   ],
   "korrekturtool": {
-    "version": "2.1.0",
-    "docker": "fabricethutbbbaden/m346-checker:2.1.0",
+    "version": "2.1.1",
+    "docker": "fabricethutbbbaden/m346-checker:2.1.1",
     "url": "https://hub.docker.com/r/fabricethutbbbaden/m346-checker/tags"
   },
   "bibliothek": {
@@ -48,5 +48,5 @@
     "datei": "M346_Bibliothek_V2.1.zip",
     "pfad": "Vorlagen/M346_Bibliothek_V2.1.zip"
   },
-  "stand": "23.11.2026 21:35"
+  "stand": "25.11.2026 12:03"
 }
